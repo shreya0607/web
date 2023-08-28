@@ -1,0 +1,100 @@
+auction-website/
+|-- public/
+|   |-- index.html
+|   |-- styles.css
+|   |-- script.js
+|-- server.js
+|-- package.json
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Auction Website - Work in Progress</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Auction Website</h1>
+  </header>
+  <main>
+    <div class="item">
+      <img src="item-image.jpg" alt="Item Image">
+      <h2>Item Title</h2>
+      <p>Description of the item.</p>
+      <p>Starting Bid: $100</p>
+      <button id="bidButton">Place Bid</button>
+    </div>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.item {
+  border: 1px solid #ddd;
+  padding: 20px;
+  text-align: center;
+}
+
+.item img {
+  max-width: 100%;
+}
+
+button {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+document.addEventListener('DOMContentLoaded', function () {
+  const bidButton = document.getElementById('bidButton');
+  
+  bidButton.addEventListener('click', function () {
+    const currentBid = 100; // Sample starting bid
+    const newBid = prompt('Enter your bid amount:');
+    
+    if (newBid !== null && !isNaN(newBid)) {
+      const parsedBid = parseFloat(newBid);
+      if (parsedBid > currentBid) {
+        alert(`Bid of $${parsedBid} placed successfully!`);
+        // Here you might make an API request to update the bid on the server.
+      } else {
+        alert('Bid must be higher than the current bid.');
+      }
+    } else {
+      alert('Invalid bid amount.');
+    }
+  });
+});
+const express = require('express');
+const app = express();
+const path = require('path');
+
+app.use(express.static('public'));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
